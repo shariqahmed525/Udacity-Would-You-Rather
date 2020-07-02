@@ -50,6 +50,7 @@ const Routes = () => {
           component={NewQuestion}
         />
         <PrivateRoute
+          exact
           path="/questions/:question_id"
           authedUser={authedUser}
           component={Question}

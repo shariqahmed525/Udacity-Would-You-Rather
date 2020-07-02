@@ -7,10 +7,12 @@ import { connect } from 'react-redux';
 import { store } from '../../store';
 import { withRouter } from 'react-router-dom';
 import { setAuthedUser } from '../../actions/authedUser';
+import { setPrevPath } from '../../actions/savePrevPath';
 
 const LoggedInOptions = ({ users, authedUser, history }) => {
   const { name, avatarURL } = users[authedUser];
   const handleLogout = () => {
+    store.dispatch(setPrevPath(""))
     store.dispatch(setAuthedUser(null));
     history.push('/login');
   }

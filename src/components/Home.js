@@ -15,6 +15,8 @@ import {
   MDBContainer,
 } from "mdbreact";
 import PollCard from '../components/PollCard';
+import { LoadingBar } from 'react-redux-loading';
+import Navbar from './Navbar';
 
 const useStyles = makeStyles({
   root: {
@@ -67,10 +69,12 @@ const Home = props => {
   const theme = useTheme();
   const classes = useStyles();
   const {
+    rAuthedUser,
     answeredQuesIds,
     unansweredQuesIds
   } = props;
   const [value, setValue] = useState(0);
+  const [authedUser, setAuthedUser] = useState("");
   const [answeredQuestioIds, setAnsweredQuestioIds] = useState([]);
   const [unansweredQuestioIds, setUnansweredQuestioIds] = useState([]);
 
@@ -84,44 +88,49 @@ const Home = props => {
   }
 
   useEffect(() => {
+    rAuthedUser && setAuthedUser(rAuthedUser);
     answeredQuesIds && setAnsweredQuestioIds([...answeredQuesIds]);
     unansweredQuesIds && setUnansweredQuestioIds([...unansweredQuesIds]);
-  }, [answeredQuesIds, unansweredQuesIds])
+  }, [answeredQuesIds, unansweredQuesIds, rAuthedUser])
 
   return (
-    <MDBContainer>
-      <MDBRow>
-        <MDBCol lg="8" md="8" sm="6" size="12" className="offset-lg-2 offset-md-2 offset-sm-3 mt-20">
-          <Paper className={classes.root}>
-            <Tabs
-              centered
-              value={value}
-              variant="fullWidth"
-              onChange={handleChange}
-              classes={{
-                root: classes.customTabRoot,
-                indicator: classes.customTabIndicator
-              }}
-            >
-              <Tab label="Unanswered Questions"  {...a11yProps(0)} />
-              <Tab label="Answered Questions"  {...a11yProps(1)} />
-            </Tabs>
-            <SwipeableViews
-              index={value}
-              onChangeIndex={handleChangeIndex}
-              axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-            >
-              <TabPanel value={value} index={0} dir={theme.direction}>
-                <PollCard type="unanswered" questionIds={unansweredQuestioIds} />
-              </TabPanel>
-              <TabPanel value={value} index={1} dir={theme.direction}>
-                <PollCard type="answered" questionIds={answeredQuestioIds} />
-              </TabPanel>
-            </SwipeableViews>
-          </Paper>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+    <>
+      <LoadingBar style={{ background: "#026157" }} />
+      <Navbar authedUser={authedUser} />
+      <MDBContainer>
+        <MDBRow>
+          <MDBCol lg="8" md="8" sm="6" size="12" className="offset-lg-2 offset-md-2 offset-sm-3 mt-20">
+            <Paper className={classes.root}>
+              <Tabs
+                centered
+                value={value}
+                variant="fullWidth"
+                onChange={handleChange}
+                classes={{
+                  root: classes.customTabRoot,
+                  indicator: classes.customTabIndicator
+                }}
+              >
+                <Tab label="Unanswered Questions"  {...a11yProps(0)} />
+                <Tab label="Answered Questions"  {...a11yProps(1)} />
+              </Tabs>
+              <SwipeableViews
+                index={value}
+                onChangeIndex={handleChangeIndex}
+                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+              >
+                <TabPanel value={value} index={0} dir={theme.direction}>
+                  <PollCard type="unanswered" questionIds={unansweredQuestioIds} />
+                </TabPanel>
+                <TabPanel value={value} index={1} dir={theme.direction}>
+                  <PollCard type="answered" questionIds={answeredQuestioIds} />
+                </TabPanel>
+              </SwipeableViews>
+            </Paper>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+    </>
   );
 }
 
@@ -138,7 +147,8 @@ const mapStateToProps = state => {
   });
   return {
     answeredQuesIds,
-    unansweredQuesIds
+    unansweredQuesIds,
+    rAuthedUser: authedUser,
   };
 }
 

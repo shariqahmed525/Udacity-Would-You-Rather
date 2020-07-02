@@ -1,0 +1,1 @@
+export const SET_PREV_PATH = 'SET_PREV_PATH';
