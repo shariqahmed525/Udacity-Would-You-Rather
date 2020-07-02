@@ -21,6 +21,7 @@ code {
 
 .error-404-image{
   width: 100%;
+  cursor: pointer;
   transform: scale(1);
 }
 

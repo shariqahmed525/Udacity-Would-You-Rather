@@ -27,6 +27,10 @@ const NewQuestion = props => {
       FailedDialog(undefined, "All fields must be required");
       return;
     }
+    if (optionOne === optionTwo) {
+      FailedDialog(undefined, "All options must be different");
+      return;
+    }
     store.dispatch(handleAddQuestion(optionOne, optionTwo));
     history.push('/');
   }

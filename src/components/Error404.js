@@ -1,8 +1,9 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
-const Error404 = () => {
+const Error404 = ({ history }) => {
   return (
-    <div className="error-404-wrapper">
+    <div className="error-404-wrapper" onClick={() => history.push('/')}>
       <img
         alt="Preview..."
         className="error-404-image"
@@ -12,4 +13,4 @@ const Error404 = () => {
   );
 }
 
-export default Error404;
+export default withRouter(Error404);
